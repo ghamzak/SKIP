@@ -40,8 +40,17 @@ AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQ
    **P.S.** Please download the files in CSV format if you want to process the raw data using `preprocess.py`.
    
    **P.P.S.** If you choose to preprocess your own data, your dataset will get different orders of location candidates (compared to my copy in `data/`) due to the randomness of python set. This will lead to slightly different model performance due to the existence of dropout.
+   
+4. **Knowledge preparation**: To reproduce SKIP, you need to format knowledge triples such that it can be fed into a neural model. cd to the `Conceptnet` directory, and do the following:
+   a. run `rough_retrieval_vn.py` 
+   b. run `translate_vn.py`
+   c. run `combine_vn_cn.py`
 
-4. Train a SKIP model:
+The output is the file `retrieval.json` under `Conceptnet/result/`.
+
+5. The BERT encoder fine-tuned on additional Wiki paragraphs are stored on Google Drive, [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQs2hVKOYX7b2nS0AOoQi4iM7H9d9isXRDwgM/edit#gid=832930347) --> change this.
+
+5. Train a SKIP model:
 
    ```bash
    python train.py -mode train -ckpt_dir ckpt -train_set data/train.json -dev_set data/dev.json\

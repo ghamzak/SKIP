@@ -1,17 +1,15 @@
-# KOALA
-Pytorch implementation of **K**n**O**wledge-**A**ware procedura**L** text underst**A**nding model on ProPara dataset (WWW 2021 long paper). The KOALA model achieves state-of-the-art results on ProPara dataset on September 2020 ([leaderboard](https://leaderboard.allenai.org/propara/submissions/public)).
+# SKIP
+Pytorch implementation of **S**emantic **K**nowledge **I**n **P**rocedural text understanding model on [ProPara dataset](https://allenai.org/data/propara). The SKIP model was heavily inspired by [KOALA model](https://github.com/ytyz1307zzh/KOALA)  (See the [leaderboard](https://leaderboard.allenai.org/propara/submissions/public)). The main difference with KOALA is that KOALA only uses commonsense knowledge extracted from ConceptNet, while SKIP uses linguistic knowledge as well. In particular, SKIP uses the semantic predicates extracted from the VerbNet semantic parse of each sentence in the dataset, using the information encoded in the semantic predicates for informing the model about the semantics of the event that is happenning to individual entities in a given sentence.
 
 ## Data
 
-KOALA uses the [ProPara dataset](http://data.allenai.org/propara/) collected by AI2. This dataset is about a reading comprehension task on procedural text, *i.e.*, a text paragraph that describes a natural process (*e.g.*, photosynthesis, evaporation, etc.). AI models are required to read the paragraph, then predict the state changes (CREATE, MOVE, DESTROY or NONE) as well as the locations of the given entities.
+SKIP is designed to use and solve the challenge proposed by the [ProPara dataset](http://data.allenai.org/propara/) created by AI2. This dataset is about a machine reading comprehension (MRC) task on procedural text, *i.e.*, a text paragraph that describes a natural process (*e.g.*, photosynthesis, evaporation, etc.). AI models are required to read the paragraph, then predict the state changes for a numeber of entities, including the change of state types CREATE, MOVE, DESTROY or NONE, as well as the locations of the given entities before and after the change of state (see the [original paper](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://arxiv.org/pdf/1805.06975.pdf)).
 
-<img src="./image/propara.png" alt="image-20191223140902073" width=500 />
-
-AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQs2hVKOYX7b2nS0AOoQi4iM7H9d9isXRDwgM/edit#gid=832930347) in the form of Google Spreadsheet. We need three files to run the KOALA model, *i.e.*, the Paragraphs file for the raw text, the Train/Dev/Test file for the dataset split, and the State_change_annotations file for the annotated entities and their locations. I also provide a copy in `data/` directory which is identical to the official release.
+AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQs2hVKOYX7b2nS0AOoQi4iM7H9d9isXRDwgM/edit#gid=832930347) in the form of a Google Spreadsheet. We need three files to run the SKIP model, *i.e.*, the Paragraphs file for the raw text, the Train/Dev/Test file for the dataset split, and the State_change_annotations file for the annotated entities and their locations. I also provide a copy in `data/` directory which is identical to the official release.
 
 ## Setup
 
-1. Create a virtual environment with python >= 3.7.
+1. Create a virtual environment with python >= 3.8.
 
 2. Install the dependency packages in `requirements.txt`:
 
@@ -29,6 +27,8 @@ AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQ
 
 1. [Download](https://docs.google.com/spreadsheets/d/1x5Ct8EmQs2hVKOYX7b2nS0AOoQi4iM7H9d9isXRDwgM/edit#gid=832930347) the dataset or use my copy in `data/`.
 
+2. 
+
 2. Process the CSV data files:
 
    ```bash
@@ -39,11 +39,9 @@ AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQ
    
    **P.S.** Please download the files in CSV format if you want to process the raw data using `preprocess.py`.
    
-   **P.P.S.** If you choose to pre-process your own data, your dataset will get different orders of location candidates (compared to my copy in `data/`) due to the randomness of python set. This will lead to slightly different model performance due to the existence of dropout.
+   **P.P.S.** If you choose to preprocess your own data, your dataset will get different orders of location candidates (compared to my copy in `data/`) due to the randomness of python set. This will lead to slightly different model performance due to the existence of dropout.
 
-   Time for running the pre-process script may vary according to your CPU performance. It takes me about 50 minutes on a Intel Xeon 3.7GHz CPU.
-
-3. Train a KOALA model:
+3. Train a SKIP model:
 
    ```bash
    python train.py -mode train -ckpt_dir ckpt -train_set data/train.json -dev_set data/dev.json\
@@ -51,11 +49,11 @@ AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQ
    -wiki_plm_path WIKI_PLM_PATH -finetune
    ```
 
-   where `-ckpt_dir` denotes the directory where checkpoints will be stored.
+   where `-ckpt_dir` denotes the directory where checkpoints will be stored, `-train_set` and `-dev_set` denote the preprocessed train and dev splits, 
 
-   `CPNET_PATH` should point to the retrieved ConceptNet knowledge triples.  `STATE_VERB_PATH` should point to the co-appearance verb set of entity states. My copy of these two files are stored in `ConceptNet/result/`. Please refer to `ConceptNet/` for more details of generating these files from scratch.
+`-cpnet_path` denites the json file containing all types of symbolic knowledge that we want to feed into the model while training, and `-state_verb` should point to the co-appearance verb set of entity states. My copy of these two files are stored in `ConceptNet/result/`. Please refer to the README file under `ConceptNet/` directory for more details of generating these files from scratch.
 
-   `CPNET_PLM_PATH` should point to the BERT model pre-fine-tuned on ConCeptNet triples. `WIKI_PLM_PATH` should point to the BERT model pre-fine-tuned on Wiki paragraphs. My copy of pre-fine-tuned encoders are stored in [Google Drive](https://drive.google.com/drive/folders/1i0rFPx5DKUXXgoaqlyYsEHLqPonz1yWF?usp=sharing). Please refer to `wiki/` and `finetune/` for more details of collecting Wiki paragraphs and fine-tuning BERT encoders.
+   `-cpnet_plm_path` denotes the directory in which the results of fine-tuning a BERT encoder on the symbolic knowledge of your choice is stored, and `-wiki_plm_path` denotes the directory in which the results of fine-tuning a BERT encoder on additional Wikipedia articles containing procedural texts is stored. My copy of these fine-tuned encoders are stored in [Google Drive](https://drive.google.com/drive/folders/1i0rFPx5DKUXXgoaqlyYsEHLqPonz1yWF?usp=sharing) --> change this. Please refer to the README files under `wiki/` and `finetune/` directories for more details of collecting Wiki paragraphs and fine-tuning BERT encoders.
 
    Some useful training arguments:
 
@@ -74,7 +72,7 @@ AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQ
    -report        The frequency of evaluating on dev set and save checkpoints (per epoch).
    ```
 
-   Time for training a new model may vary according to your GPU performance as well as your training schema (*i.e.*, training epochs and early stopping rounds). It takes me about 1 hour to train a new model on a single Tesla P40.
+   Time for training a new model may vary according to your GPU performance as well as your training schema (*i.e.*, training epochs and early stopping rounds). 
 
 4. Predict on test set using a trained model:
 
@@ -84,7 +82,7 @@ AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQ
    -cpnet_struc_input -state_verb STATE_VERB_PATH -wiki_plm_path WIKI_PLM_PATH -restore ckpt/best_checkpoint.pt
    ```
 
-   where -output is a TSV file that will contain the prediction results, and -dummy_test is the output template to simplify output formatting. The `dummy-predictions.tsv` file is provided by the [official evaluation script](https://github.com/allenai/aristo-leaderboard/tree/master/propara/data/test) of AI2, and I just copied it to `data/`.
+   where `-output` is a TSV file that will contain the prediction results, and `-dummy_test` is the output template to simplify output formatting. The `dummy-predictions.tsv` file is provided by the [official evaluation script](https://github.com/allenai/aristo-leaderboard/tree/master/propara/data/test) of AI2, and it is copied to the `data/` directory.
 
 5. Run the evaluation script using the ground-truth labels and your predictions:
 
@@ -93,27 +91,4 @@ AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQ
    ```
 
    where `answers.tsv` contains the ground-truth labels, and `diagnostic.txt` will contain detailed scores for each instance. `answers.tsv` can be found [here](https://github.com/allenai/aristo-leaderboard/tree/master/propara/data/test), or you can use my copy in `data/`. `evaluator` directory contains the [evaluation scripts](https://github.com/allenai/aristo-leaderboard/tree/master/propara/evaluator) provided by AI2.
-   
-
-## Reproducibility
-
-We have uploaded the trained model & the output predictions to [Google Drive](https://drive.google.com/drive/folders/1d2lXtF64c-wpCQxrHUyjylnBxI6NK-JO?usp=sharing). Uploading this trained model during test time can reproduce the 70.4 F1 score as shown on the leaderboard.
-
-For more issues regarding training your own model to reproduce the results, please refer to [our post](https://github.com/ytyz1307zzh/KOALA/issues/2) in Issues.
-
-   
-## Reference
-Please kindly cite our paper if you find our work useful.
-   ```
-   @inproceedings{zhang2021koala,
-     author    = {Zhihan Zhang and
-                  Xiubo Geng and
-                  Tao Qin and
-                  Yunfang Wu and
-                  Daxin Jiang},
-     title     = {Knowledge-Aware Procedural Text Understanding with Multi-Stage Training},
-     booktitle = {{WWW} '21: The Web Conference 2021, Ljubljana, Slovenia, April 19--23, 2021},
-     year      = {2021}
-   }
-   ```
 

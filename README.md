@@ -27,9 +27,9 @@ AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQ
 
 1. [Download](https://docs.google.com/spreadsheets/d/1x5Ct8EmQs2hVKOYX7b2nS0AOoQi4iM7H9d9isXRDwgM/edit#gid=832930347) the dataset or use my copy in `data/`.
 
-2. 
+2. Every single sentence in the dataset was parsed using the [VerbNet parser](https://github.com/jgung/verbnet-parser). If you want to perform parsing on your own, or on a different dataser, refer to this link for more information. Otherwise, I have stored a copy of the parsed files [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQs2hVKOYX7b2nS0AOoQi4iM7H9d9isXRDwgM/edit#gid=832930347) --> change this.
 
-2. Process the CSV data files:
+3. Process the CSV data files:
 
    ```bash
    python preprocess.py
@@ -41,7 +41,7 @@ AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQ
    
    **P.P.S.** If you choose to preprocess your own data, your dataset will get different orders of location candidates (compared to my copy in `data/`) due to the randomness of python set. This will lead to slightly different model performance due to the existence of dropout.
 
-3. Train a SKIP model:
+4. Train a SKIP model:
 
    ```bash
    python train.py -mode train -ckpt_dir ckpt -train_set data/train.json -dev_set data/dev.json\
@@ -74,7 +74,7 @@ AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQ
 
    Time for training a new model may vary according to your GPU performance as well as your training schema (*i.e.*, training epochs and early stopping rounds). 
 
-4. Predict on test set using a trained model:
+5. Predict on test set using a trained model:
 
    ```bash
    python -u train.py -mode test -test_set data/test.json -dummy_test data/dummy-predictions.tsv\
@@ -84,7 +84,7 @@ AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQ
 
    where `-output` is a TSV file that will contain the prediction results, and `-dummy_test` is the output template to simplify output formatting. The `dummy-predictions.tsv` file is provided by the [official evaluation script](https://github.com/allenai/aristo-leaderboard/tree/master/propara/data/test) of AI2, and it is copied to the `data/` directory.
 
-5. Run the evaluation script using the ground-truth labels and your predictions:
+6. Run the evaluation script using the ground-truth labels and your predictions:
 
    ```bash
    python evaluator/evaluator.py -p data/prediction.tsv -a data/answers.tsv --diagnostics data/diagnostic.txt

@@ -1,0 +1,24 @@
+motion(A, B): A moves along B
+admit(A, B, C): B is located in C
+alive(A): A is alive
+!alive(A): A is dead
+appear(A): A appears
+covered(A, B): A is covered with B
+attached(A, B): A is at the same location with B
+!attached(A, B): A and B are apart
+!be(A): A is destroyed
+be(A): A is created
+contact(A, B): A is at the same location with B
+contain(A, B): B is located in A
+create_image(A, B): B is created
+degradation_material_integrity(A): A is destroyed
+destroyed(A): A is destroyed
+develop(A): A is created
+emit(A, B): B is not located at A
+full_of(A, B): B is located in A 
+give_birth(A, B): B is created
+!has_location(A, B): A moved away from B
+has_location(A, B): A moved towards B
+has_location(A, B): A is located in B
+reside(A, B): A is in B
+together(A, B): A is at the same location with B

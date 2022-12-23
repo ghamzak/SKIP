@@ -1,6 +1,9 @@
 
 import sys, collections, pylev
 from stemming.porter2 import stem
+import re
+import spacy
+nlp = spacy.load('en_core_web_sm')
 
 #--------------------------------------------------------------
 # Author: Scott Wen-tau Yih
@@ -25,7 +28,17 @@ PredictionRecord = collections.namedtuple('PredictionRecord', 'pid sid participa
 
 #----------------------------------------------------------------------------------------------------------------
 
-def compare_to_gold_labels(participants, system_participants):
+
+def lemmatize(text):
+    return ' '.join([t.lemma_ for t in nlp(text)])
+
+def getPredictionEntityList(pred_ent_list):
+    res = []
+    for p in [x.lower() for x in pred_ent_list]:
+        res += [y.strip() for y in p.split(';')]        
+    return res
+
+def compare_to_gold_labels(participants, system_participants, pid, sid):
     ret = []
     found = False
     for p in participants:
@@ -39,7 +52,14 @@ def compare_to_gold_labels(participants, system_participants):
                 ret.append(g)
                 found = True
         if not found:
-            print(f"Cannot find {p}")
+            lemmatized_p = lemmatize(p)
+            for g in system_participants:
+                if (pylev.levenshtein(lemmatized_p, g) < 3):
+                    ret.append(g)
+                    found = True
+
+        if not found:
+            print(f"Cannot find {p}, pid: {pid}, sid: {sid}")
     return ret
 
 def preprocess_locations(locations):
@@ -54,7 +74,7 @@ def preprocess_locations(locations):
     return ret
 
 
-def preprocess_question_label(sid, participant, event_type, from_location, to_location, system_participants=None):
+def preprocess_question_label(pid, sid, participant, event_type, from_location, to_location, system_participants=None):
 
     # check if there are multiple participants grouped together
     participants = [x.strip() for x in participant.split(';')]
@@ -67,7 +87,7 @@ def preprocess_question_label(sid, participant, event_type, from_location, to_lo
 
     #print(participant, participants, system_participants)
     if system_participants != None: # check if the participants are in his list
-        participants = compare_to_gold_labels(participants, system_participants)
+        participants = compare_to_gold_labels(participants, system_participants, pid, sid)
         #print("legit_participants =", participants)
 
     #print(from_location, from_locations)
@@ -104,9 +124,10 @@ def readLabels(fnLab, selPid=None, gold_labels=None):
 
             if gold_labels and selPid and pid in selPid:
                 #print("pid=", pid)
-                TurkerLabels += preprocess_question_label(sid, participant, event_type, from_location, to_location, gold_labels[pid].keys())
+                TurkerLabels += preprocess_question_label(pid, sid, participant, event_type, from_location, to_location, gold_labels[pid].keys())
             else:
-                TurkerLabels += preprocess_question_label(sid, participant, event_type, from_location, to_location)
+                print("pid not in selPid?:", pid)
+                TurkerLabels += preprocess_question_label(pid, sid, participant, event_type, from_location, to_location)
 
             #TurkerLabels += (TurkerQuestionLabel(sid, participant, event_type, from_location, to_location))
     return ret
@@ -120,15 +141,21 @@ def readPredictions(fnPred):
         f = ln.rstrip().split('\t')
         pid, sid, participant, from_location, to_location = int(f[0]), int(f[1]), f[2], f[3], f[4]
 
+        ents = [x.strip() for x in participant.lower().split(';')]
+        ents_lammatized = [lemmatize(x) for x in ents]
+        ents = ents + ents_lammatized
+        ents_comma_fix = [re.sub(r'(?<=\w)(?=\,)', ' ', x) for x in ents if ',' in x] # (?<=<lookbehind_regex>) # (?=<lookahead_regex>)
+        ents = ents + ents_comma_fix
         if pid not in ret:
             ret[pid] = {}
-        dtPartPred = ret[pid]
+        dtPartPred = ret[pid]        
 
-        if participant not in dtPartPred:
-            dtPartPred[participant] = {}
-
-        dtPartPred[participant][sid] = PredictionRecord(pid, sid, participant, from_location, to_location)
-
+        for e in ents:
+            if e not in dtPartPred:
+                dtPartPred[e] = {}
+        # if participant not in dtPartPred:
+        #     dtPartPred[participant] = {}
+            dtPartPred[e][sid] = PredictionRecord(pid, sid, e, from_location, to_location)
     return ret
 
 #----------------------------------------------------------------------------------------------------------------
@@ -224,10 +251,18 @@ def findMoveSteps(prediction_records):
 
 # Q1: Is participant X created during the process?
 def Q1(labels, predictions):
+    print('Q1')
     tp = fp = tn = fn = 0.0
     for pid in labels:
-        setParticipants = findAllParticipants(labels[pid])
+        setParticipants = findAllParticipants(labels[pid])        
         # find predictions
+        predEnts = getPredictionEntityList([x for x in predictions[pid].keys()])
+        setParticipants = [p for p in setParticipants if p in predEnts]
+        print('pid:', pid, ', participants:', setParticipants)
+
+        if not setParticipants:
+            print('ents acc2 preds',predictions[pid].keys(), 'ents acc2 labels', labels[pid])
+
         be_created = {}
         for participant in setParticipants:
             pred_creation_step = findCreationStep(predictions[pid][participant].values())
@@ -244,11 +279,16 @@ def Q1(labels, predictions):
 
 # Q2: Participant X is created during the process. At which step is it created?
 def Q2(labels, predictions):
+    print('Q2')
     tp = fp = tn = fn = 0.0
     # find all created participants and their creation step
     for pid,lstTurkerLabels in labels.items():
         for turkerLabels in lstTurkerLabels:
             for x in [x for x in turkerLabels if x.event_type == 'create']:
+                if x.participant not in predictions[pid]:
+                    print('pid:', pid, 'participant:', x.participant)
+                    continue
+
                 pred_creation_step = findCreationStep(predictions[pid][x.participant].values())
                 tp += int(pred_creation_step != -1 and pred_creation_step == x.sid)
                 fp += int(pred_creation_step != -1 and pred_creation_step != x.sid)
@@ -257,11 +297,15 @@ def Q2(labels, predictions):
 
 # Q3: Participant X is created at step Y, and the initial location is known. Where is the participant after it is created?
 def Q3(labels, predictions):
+    print('Q3')
     tp = fp = tn = fn = 0.0
     # find all created participants and their creation step
     for pid,lstTurkerLabels in labels.items():
         for turkerLabels in lstTurkerLabels:
             for x in [x for x in turkerLabels if x.event_type == 'create']:
+                if x.participant not in predictions[pid]:
+                    print('pid:', pid, 'participant:', x.participant)
+                    continue
                 pred_loc = predictions[pid][x.participant][x.sid].to_location
                 tp += int(pred_loc != 'null' and location_match(pred_loc, x.to_location))
                 fp += int(pred_loc != 'null' and not location_match(pred_loc, x.to_location))
@@ -272,12 +316,21 @@ def Q3(labels, predictions):
 
 # Q4: Is participant X destroyed during the process?
 def Q4(labels, predictions):
+    print('Q4')
     tp = fp = tn = fn = 0.0
     for pid in labels:
         setParticipants = findAllParticipants(labels[pid])
         # find predictions
+        setParticipants = [p for p in setParticipants if p in predictions[pid]]
+        print('pid:', pid, ', participants:', setParticipants)
+        if not setParticipants:
+            print('ents acc2 preds',predictions[pid].keys(), 'ents acc2 labels', labels[pid])
+
         be_destroyed = {}
         for participant in setParticipants:
+            if participant not in predictions[pid]:
+                print('pid:', pid, 'participant:', participant)
+                continue
             pred_destroy_step = findDestroyStep(predictions[pid][participant].values())
             be_destroyed[participant] = (pred_destroy_step != -1)
         for turkerLabels in labels[pid]:
@@ -292,24 +345,33 @@ def Q4(labels, predictions):
 
 # Q5: Participant X is destroyed during the process. At which step is it destroyed?
 def Q5(labels, predictions):
+    print('Q5')
     tp = fp = tn = fn = 0.0
     # find all destroyed participants and their destroy step
     for pid, lstTurkerLabels in labels.items():
         for turkerLabels in lstTurkerLabels:
             for x in [x for x in turkerLabels if x.event_type == 'destroy']:
-                    pred_destroy_step = findDestroyStep(predictions[pid][x.participant].values())
-                    tp += int(pred_destroy_step != -1 and pred_destroy_step == x.sid)
-                    fp += int(pred_destroy_step != -1 and pred_destroy_step != x.sid)
-                    fn += int(pred_destroy_step == -1)
+                if x.participant not in predictions[pid]:
+                    print('pid:', pid, 'participant:', x.participant)
+                    continue
+                pred_destroy_step = findDestroyStep(predictions[pid][x.participant].values())
+                tp += int(pred_destroy_step != -1 and pred_destroy_step == x.sid)
+                fp += int(pred_destroy_step != -1 and pred_destroy_step != x.sid)
+                fn += int(pred_destroy_step == -1)
     return tp,fp,tn,fn
 
 # Q6: Participant X is destroyed at step Y, and its location before destroyed is known. Where is the participant right before it is destroyed?
 def Q6(labels, predictions):
+    print('Q6')
     tp = fp = tn = fn = 0.0
     # find all created participants and their destroy step
     for pid,lstTurkerLabels in labels.items():
         for turkerLabels in lstTurkerLabels:
             for x in [x for x in turkerLabels if x.event_type == 'destroy']:
+                if x.participant not in predictions[pid]:
+                    print('pid:', pid, 'participant:', x.participant)
+                    continue
+
                 pred_loc = predictions[pid][x.participant][x.sid].from_location
                 tp += int(pred_loc != 'null' and location_match(pred_loc, x.from_location))
                 fp += int(pred_loc != 'null' and not location_match(pred_loc, x.from_location))
@@ -320,9 +382,16 @@ def Q6(labels, predictions):
 
 # Q7 Does participant X move during the process?
 def Q7(labels, predictions):
+    print('Q7')
     tp = fp = tn = fn = 0.0
     for pid in labels:
         setParticipants = findAllParticipants(labels[pid])
+        print('pid:', pid, ', participants:', setParticipants)
+        setParticipants = [p for p in setParticipants if p in predictions[pid]]
+        print('pid:', pid, ', participants:', setParticipants)
+        if not setParticipants:
+            print('ents acc2 preds',predictions[pid].keys(), 'ents acc2 labels', labels[pid])
+
         # find predictions
         be_moved = {}
         for participant in setParticipants:
@@ -343,21 +412,28 @@ def Q7(labels, predictions):
 
 # Q8 Participant X moves during the process.  At which steps does it move?
 def Q8(labels, predictions):
+    print('Q8')
     tp = fp = tn = fn = 0.0
     for pid in labels:
         setParticipants = findAllParticipants(labels[pid])
-
+        # setParticipants = [p for p in setParticipants if p in predictions[pid]]
+        print('pid:', pid, ', participants:', setParticipants, 'predicted_ents:', list(predictions[pid].keys()))
+        if not setParticipants:
+            print('ents acc2 preds',predictions[pid].keys(), 'ents acc2 labels', labels[pid])
+        ents_to_examine = setParticipants.intersection(list(predictions[pid].keys()))
         # find predictions
         pred_moved_steps = {}
-        for participant in setParticipants:
+        for participant in ents_to_examine:
             pred_moved_steps[participant] = findMoveSteps(predictions[pid][participant].values())
         num_steps = len(predictions[pid][participant].keys())
-
+        
         for turkerLabels in labels[pid]:
             gold_moved_steps = {}
             for x in [x for x in turkerLabels if x.event_type == 'move']:
                 if x.participant not in gold_moved_steps:
                     gold_moved_steps[x.participant] = []
+                # if x.participant not in pred_moved_steps:
+                #     pred_moved_steps[x.participant] = 
                 gold_moved_steps[x.participant].append(x.sid)
 
             for participant in gold_moved_steps:
@@ -379,6 +455,7 @@ def set_compare(pred_steps, gold_steps, num_steps):
 
 # Q9 Participant X moves at step Y, and its location before step Y is known. What is its location before step Y?
 def Q9(labels, predictions):
+    print('Q9')
     tp = fp = tn = fn = 0.0
     for pid in labels:
         for turkerLabels in labels[pid]:
@@ -392,6 +469,7 @@ def Q9(labels, predictions):
 
 # Q10 Participant X moves at step Y, and its location after step Y is known. What is its location after step Y?
 def Q10(labels, predictions):
+    print('Q10')
     tp = fp = tn = fn = 0.0
     for pid in labels:
         for turkerLabels in labels[pid]:
@@ -424,7 +502,7 @@ def main():
     qid = 0
     for Q in [Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10]:
         qid += 1
-        tp, fp, tn, fn = Q(labels, predictions)
+        tp, fp, tn, fn = Q(labels, predictions)        
         header,results_str, results = metrics(tp,fp,tn,fn,qid)
         if blHeader:
             print("\t%s" % header)

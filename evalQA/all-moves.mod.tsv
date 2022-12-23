@@ -1,0 +1,455 @@
+37	4	-	bones	move	?	rock
+37	5	-	bones	destroy	rock	-
+37	6	-	fossils	create	-	?
+37	5	-	mineral	move	?	rock
+37	2	-	plant; animal	move	watery environment	mud and silt
+37	4	-	plant; animal	move	mud and silt	rock
+37	3	-	soft tissues	destroy	?	-
+
+38	2	-	animal; body	move	?	sandy or wet place
+38	6	-	animal; body	destroy	sandy or wet place	-
+38	6	-	fossil	create	-	rock
+38	5	-	rock	create	-	around the body
+38	4	-	soil	move	?	around the body
+38	5	-	soil	destroy	around the body	-
+
+67	9	-	coal	create	-	bottom of the swamp
+67	5	-	peat	create	-	bottom of the swamp
+67	9	-	peat	destroy	bottom of the swamp	-
+67	2	-	plants; dead plants	move	?	swamp
+67	3	-	plants; dead plants	move	swamp	bottom of the swamp
+67	5	-	plants; dead plants	destroy	bottom of the swamp	-
+
+68	7	-	coal	create	-	burial peat
+68	7	-	heat	create	-	burial peat
+68	4	-	peat; burial peat	create	-	steamy , swampy area
+68	5	-	peat; burial peat	move	steamy , swampy area	sand , clay , and other mineral material
+68	6	-	peat; burial peat	move	sand , clay , and other mineral material	swampy area
+68	7	-	peat; burial peat	destroy	swampy area	-
+68	1	-	plant and tree remains	create	-	?
+68	2	-	plant and tree remains	move	?	area
+68	3	-	plant and tree remains	move	area	steamy , swampy area
+68	4	-	plant and tree remains	move	steamy , swampy area	swampy area
+68	5	-	plant and tree remains	move	swampy area	sand , clay , and other mineral material
+68	6	-	plant and tree remains	move	sand , clay , and other mineral material	swampy area
+68	1	-	plants; trees	destroy	?	-
+68	4	-	water	move	steamy , swampy area	peat
+68	6	-	water	destroy	peat	-
+
+69	5	-	clay	destroy	bottom of swamp	-
+69	7	-	coal	create	-	bottom of swamp
+69	3	-	peat	create	-	bottom of swamp
+69	7	-	peat	destroy	bottom of swamp	-
+69	2	-	plants;trees	move	?	bottom of swamp
+69	3	-	plants;trees	destroy	bottom of swamp	-
+69	6	-	pressure	create	-	sedimentary rock
+69	5	-	sand	destroy	bottom of swamp	-
+69	5	-	sedimentary rocks	create	-	bottom of swamp
+69	3	-	water	move	bottom of swamp	peat
+69	6	-	water	move	peat	?
+
+70	1	-	rain	create	-	?
+70	6	-	rain	destroy	?	-
+70	7	-	streams	create	-	?
+70	1	-	water	move	?	rain
+70	2	-	water	move	rain	river or lake
+70	3	-	water	move	river or lake	ground
+70	4	-	water	move	ground	street
+70	5	-	water	move	street	house
+70	6	-	water	move	house	ground
+70	7	-	water	move	ground	stream
+70	8	-	water	destroy	stream	-
+
+99	6	-	a very different ecosystem	create	-	area that receive little rain
+99	7	-	desert	create	-	area that receive little rain
+99	3	-	rain	create	-	mountain
+
+152	4	-	solid ; cloud droplets	create	-	atmosphere
+152	4	-	water vapor ; lifted vapor ; vapor	destroy	atmosphere	-
+
+249	5	-	new types of rocks ; new substance ; certain types of rocks	create	-	?
+249	8	-	new types of rocks ; new substance ; certain types of rocks	move	?	water
+249	4	-	oxygen	move	?	rock
+249	5	-	oxygen	destroy	rock	-
+249	5	-	rocks ; smaller pieces	destroy	?	-
+
+310	1	-	blood	move	?	heart
+310	2	-	blood	move	heart	lung
+310	5	-	blood	move	lung	heart
+310	6	-	blood	move	heart	body
+310	3	-	carbon dioxide	destroy	blood	-
+310	4	-	oxygen	move	lung	blood
+
+400	5	-	electricity	create	-	solar panel
+400	4	-	energy	create	-	solar panel
+400	5	-	energy	destroy	solar panel	-
+
+401	6	-	alternating current	create	-	solar `` inverter ''
+401	7	-	alternating current	move	solar `` inverter ''	house
+401	5	-	direct current	create	-	solar panel
+401	6	-	direct current	destroy	solar panel	-
+401	2	-	sunlight	create	-	solar panel
+401	3	-	sunlight	move	solar panel	top half of the solar panel
+401	4	-	sunlight	move	top half of the solar panel	bottom half of the solar panel
+401	5	-	sunlight	destroy	bottom half of the solar panel	-
+
+409	5	-	electrical impulses	create	-	retina
+409	6	-	electrical impulses	move	retina	brain
+409	4	-	image	create	-	retina
+409	5	-	image	destroy	retina	-
+
+410	4	-	electric signal	create	-	retina
+410	5	-	electric signal	move	retina	brain
+410	1	-	light	move	?	cornea
+410	2	-	light	move	cornea	iris
+410	3	-	light	move	iris	retina
+410	4	-	light	destroy	retina	-
+
+411	2	-	electrochemical signals	create	-	retina
+411	6	-	electrochemical signals	move	retina	cerebral cortex
+411	7	-	electrochemical signals	move	cerebral cortex	superior colliculus
+411	8	-	electrochemical signals	move	superior colliculus	brain
+411	1	-	light	move	retina	photoreceptor cell
+411	2	-	light	destroy	photoreceptor cell	-
+
+429	2	-	fixed nitrogen; usable nitrogen	create	-	soil
+429	4	-	fixed nitrogen; usable nitrogen	move	soil	plant
+429	5	-	fixed nitrogen; usable nitrogen	move	plant	animal
+429	6	-	fixed nitrogen; usable nitrogen	move	animal	waste
+429	8	-	fixed nitrogen; usable nitrogen	move	waste	soil
+429	9	-	fixed nitrogen; usable nitrogen	destroy	soil	-
+429	9	-	gas-based form	create	-	soil
+429	10	-	gas-based form	move	soil	atmosphere
+429	2	-	nitrogen	destroy	atmosphere	-
+429	5	-	plants	move	?	animal
+429	6	-	plants	move	animal	?
+429	9	-	plants	destroy	?	-
+429	6	-	waste	create	-	?
+429	9	-	waste	destroy	?	-
+
+460	3	-	carbon	move	live thing	underground
+460	4	-	carbon	destroy	underground	-
+460	4	-	carbon-based mixture	create	-	underground
+460	7	-	carbon-based mixture	destroy	underground	-
+460	7	-	energy	create	-	fossil fuel
+460	9	-	energy	move	fossil fuel	?
+460	10	-	energy	destroy	?	-
+460	7	-	fossil fuel	create	-	surface
+460	8	-	fossil fuel	destroy	surface	-
+460	3	-	living things ; remains of living things	move	?	underground
+460	4	-	living things ; remains of living things	destroy	underground	-
+460	10	-	power	create	-	?
+
+463	4	-	hailstone	create	-	aloft
+463	5	-	hailstone	move	aloft	earth
+463	3	-	ice particle	create	-	surface
+463	1	-	raindrops	move	?	updraft
+463	2	-	raindrops	destroy	updraft	-
+
+465	2	-	hail	create	-	wind
+465	7	-	hail	move	wind	ground
+465	1	-	water	move	?	wind
+465	2	-	water	destroy	wind	-
+
+502	1	-	diesel	destroy	combustion chamber	-
+502	1	-	energy	create	-	combustion chamber
+502	2	-	energy	move	combustion chamber	piston motion
+502	3	-	energy	move	piston motion	rotary motion
+502	1	-	petrol	destroy	combustion chamber	-
+502	1	-	piston motion	create	-	?
+502	2	-	piston motion	move	?	piston
+502	3	-	piston motion	destroy	piston	-
+502	3	-	rotary motion	create	-	?
+
+503	1	-	gasoline;gas	move	?	car
+503	3	-	spark	create	-	car
+503	5	-	spark	move	car	?
+
+533	4	-	sapling	create	-	soil
+533	5	-	sapling	destroy	soil	-
+533	1	-	seed	move	tree	soil
+533	2	-	seed	destroy	soil	-
+533	3	-	seedling	create	-	soil
+533	4	-	seedling	destroy	soil	-
+533	2	-	sprouts	create	-	soil
+533	3	-	sprouts	destroy	soil	-
+533	5	-	tree	create	-	soil
+533	7	-	tree	destroy	soil	-
+
+534	5	-	flowers	create	-	tree
+534	4	-	fruit	create	-	tree
+534	2	-	seed	destroy	?	-
+534	2	-	small tree ; tree	create	-	?
+534	7	-	small tree ; tree	destroy	?	-
+
+582	3	-	air masses ; masses	create	-	?
+582	5	-	air masses ; masses	destroy	?	-
+582	7	-	circular patterns	create	-	updraft
+582	8	-	circular patterns	move	updraft	?
+582	2	-	cool, dry air	move	?	south
+582	3	-	cool, dry air	destroy	south	-
+582	8	-	tornado	destroy	?	-
+582	6	-	updraft	create	-	?
+582	8	-	updraft	move	?	tornado
+582	1	-	warm, moist air	move	south	north
+582	3	-	warm, moist air	destroy	north	-
+582	5	-	wind	create	-	?
+
+583	3	-	dry, cold high-pressure air	move	?	air
+583	6	-	dry, cold high-pressure air	move	air	ground
+583	5	-	funnel; tornado	create	-	?
+583	6	-	funnel; tornado	move	?	ground
+583	4	-	rotation	create	-	?
+583	5	-	rotation	move	?	funnel
+583	6	-	rotation	move	funnel	ground
+583	2	-	updraft	create	-	?
+583	4	-	updraft	move	?	air
+583	6	-	updraft	move	air	ground
+583	2	-	warm, humd low-presure air	move	?	air
+583	6	-	warm, humd low-presure air	move	air	ground
+
+600	2	-	air	destroy	engine	-
+600	2	-	energy	create	-	engine
+600	3	-	energy	move	engine	piston
+600	4	-	energy	move	piston	crankshaft
+600	5	-	energy	move	crankshaft	gear
+600	6	-	energy	move	gear	wheel
+600	2	-	hot gas	create	-	engine
+600	2	-	petrol; fuel	destroy	engine	-
+
+653	4	-	flower	create	-	tree
+653	5	-	flower	destroy	tree	-
+653	5	-	fruit	create	-	tree
+653	2	-	seed	destroy	?	-
+653	2	-	seedling	create	-	?
+653	3	-	tree	create	-	?
+
+654	6	-	material for new growth	create	-	ground
+654	2	-	root system	create	-	ground
+654	3	-	tree	create	-	ground
+654	6	-	tree	destroy	ground	-
+
+659	1	-	ammonium	create	-	soil
+659	2	-	ammonium	destroy	soil	-
+659	4	-	ammonium	create	-	soil
+659	5	-	extra nitrogen	move	soil	air
+659	1	-	nitrogen; nitrates	destroy	soil	-
+659	2	-	nitrogen; nitrates	create	-	soil
+659	3	-	nitrogen; nitrates	move	soil	plant
+659	4	-	nitrogen; nitrates	destroy	plant	-
+659	4	-	plant	destroy	soil	-
+
+660	6	-	ammonium	create	-	soil
+660	7	-	ammonium	destroy	soil	-
+660	4	-	animals	destroy	?	-
+660	1	-	atmospheric nitrogen	destroy	atmosphere	-
+660	7	-	nitrate	create	-	soil
+660	8	-	nitrate	destroy	soil	-
+660	8	-	nitrogen gas	create	-	soil
+660	9	-	nitrogen gas	move	soil	atmosphere
+660	1	-	organic nitrogen	create	-	soil
+660	2	-	organic nitrogen	move	soil	plant
+660	5	-	organic nitrogen	move	plant	fungus
+660	6	-	organic nitrogen	destroy	fungus	-
+660	4	-	plants	destroy	?	-
+660	5	-	wastes	create	-	soil
+
+661	1	-	ammonium	create	-	soil
+661	2	-	ammonium	destroy	soil	-
+661	7	-	ammonium	create	-	soil
+661	8	-	ammonium	move	soil	air
+661	7	-	animal	destroy	?	-
+661	2	-	nitrates	create	-	soil
+661	3	-	nitrates	move	soil	plant
+661	5	-	nitrates	destroy	plant	-
+661	1	-	nitrogen	destroy	?	-
+661	5	-	nitrogen	create	-	amino acid , nucleic acid , and chlorophyll
+661	7	-	nitrogen	destroy	amino acid , nucleic acid , and chlorophyll	-
+661	7	-	plant	destroy	soil	-
+
+695	3	-	clouds	create	-	air
+695	5	-	hail	create	-	earth
+695	7	-	hail	move	earth	ocean , lake , or river
+695	5	-	rain	create	-	earth
+695	7	-	rain	move	earth	ocean , lake , or river
+695	5	-	sleet	create	-	earth
+695	7	-	sleet	move	earth	ocean , lake , or river
+695	5	-	snow	create	-	earth
+695	7	-	snow	move	earth	ocean , lake , or river
+695	1	-	vapor; steam; water vapor	create	-	river or lake or the ocean
+695	2	-	vapor; steam; water vapor	move	river or lake or the ocean	air
+695	3	-	vapor; steam; water vapor	destroy	air	-
+695	1	-	water	destroy	river or lake or the ocean	-
+
+696	6	-	rain	create	-	?
+696	2	-	water droplets	create	-	air
+696	2	-	water vapor	move	air	water droplet
+696	3	-	water droplets	move	air	cloud
+696	3	-	water vapor	move	water droplet	?
+696	5	-	water vapor	move	?	cloud
+696	6	-	water droplets	move	cloud	?
+696	6	-	water vapor	move	cloud	?
+
+697	2	-	clouds	create	-	?
+697	5	-	rain	create	-	area below the cloud
+697	1	-	water	move	body of water	?
+697	2	-	water	move	?	cloud
+697	5	-	water	move	cloud	area below the cloud
+
+725	1	-	bones	move	watery environment	mud and silt
+725	3	-	bones	move	mud and silt	?
+725	4	-	bones	destroy	?	-
+725	1	-	plant; animal	move	watery environment	mud and silt
+725	2	-	plant; animal	destroy	mud and silt	-
+725	3	-	rock	create	-	?
+725	3	-	sediment	destroy	?	-
+725	1	-	soft tissues	move	?	mud and silt
+725	2	-	soft tissues	destroy	mud and silt	-
+725	6	-	stone replica; fossil	create	-	void
+
+726	3	-	animal	destroy	?	-
+726	4	-	animal's skeleton	move	?	bottom of a ocean
+726	9	-	animal's skeleton	destroy	bottom of a ocean	-
+726	9	-	hole	create	-	rock
+726	8	-	mud; sand	destroy	bottom of a ocean	-
+726	8	-	rock	create	-	bottom of a ocean
+
+727	2	-	animal	move	?	watery environment
+727	3	-	animal	destroy	watery environment	-
+727	4	-	bones	move	animal	watery environment
+727	5	-	bones	move	watery environment	mud and silt
+727	6	-	bones	move	mud and silt	rock
+727	7	-	bones	destroy	rock	-
+727	10	-	fossil	create	-	rock
+727	8	-	minerals	move	?	bone
+727	9	-	minerals	move	bone	rock
+727	1	-	mud; silt	move	watery environment	?
+727	5	-	mud; silt	move	?	watery environment
+727	6	-	mud; silt	destroy	watery environment	-
+727	6	-	rock	create	-	watery environment
+727	3	-	soft tissues	destroy	animal	-
+
+791	4	-	ac electricity	create	-	inverter
+791	5	-	ac electricity	move	inverter	home
+791	6	-	ac electricity	move	home	power grid
+791	3	-	dc electricity	create	-	solar cell
+791	4	-	dc electricity	destroy	solar cell	-
+
+896	1	-	oxygen-depleted blood ; blood	move	body	heart
+896	3	-	oxygen-depleted blood ; blood	move	heart	right ventricle
+896	6	-	oxygen-depleted blood ; blood	move	right ventricle	lung
+896	7	-	oxygen-depleted blood ; blood	destroy	lung	-
+896	7	-	oxygenated blood ; blood	create	-	lung
+896	8	-	oxygenated blood ; blood	move	lung	left atrium
+896	9	-	oxygenated blood ; blood	move	left atrium	body
+
+903	4	-	chemical energy	create	-	photoreceptor cell
+903	5	-	chemical energy	move	photoreceptor cell	brain
+903	5	-	image	create	-	brain
+903	1	-	visible light; light	move	?	lens
+903	2	-	visible light; light	move	lens	retina
+903	3	-	visible light; light	move	retina	photoreceptor cell
+903	4	-	visible light; light	destroy	photoreceptor cell	-
+
+904	3	-	electrical pulses	create	-	optic nerve
+904	4	-	electrical pulses	move	optic nerve	optic canal
+904	5	-	electrical pulses	move	optic canal	lateral geniculate nucleus and the visual cortex
+904	1	-	light	destroy	cornea and lens	-
+904	1	-	small image	create	-	retina
+904	3	-	small image	destroy	retina	-
+
+927	5	-	land	destroy	?	-
+927	5	-	plants	destroy	ground	-
+927	2	-	rain	destroy	?	-
+927	2	-	rain water; water	create	-	ground
+927	5	-	trees	destroy	ground	-
+
+932	1	-	water	move	?	rock
+
+933	3	-	water	move	?	mineral base material
+933	4	-	water	move	mineral base material	rock
+
+1031	1	-	bones	create	-	mud or soil
+1031	3	-	bones	destroy	mud or soil	-
+1031	5	-	fossil	create	-	rock
+1031	1	-	plant or animal	destroy	mud or soil	-
+1031	4	-	rock	create	-	?
+1031	5	-	rock	destroy	?	-
+1031	3	-	sediment	create	-	mud or soil
+1031	4	-	sediment	destroy	mud or soil	-
+
+1032	2	-	animals	move	wet environment	mud
+1032	3	-	animals	destroy	mud	-
+1032	3	-	bones and hard tissues ; remains	create	-	mud
+1032	5	-	bones and hard tissues ; remains	destroy	mud	-
+1032	2	-	plants	move	wet environment	mud
+1032	3	-	plants	destroy	mud	-
+1032	6	-	rock	create	-	remains
+1032	5	-	sediment	create	-	remains
+1032	6	-	sediment	destroy	remains	-
+
+1033	2	-	animal	move	?	mud
+1033	3	-	animal	destroy	mud	-
+1033	5	-	mold	create	-	mud
+1033	4	-	rock	create	-	?
+1033	3	-	skeleton	create	-	mud
+1033	4	-	skeleton	move	mud	rock
+1033	5	-	skeleton	destroy	rock	-
+
+1145	3	-	helium atoms	create	-	star
+1145	2	-	hydrogen fuel	destroy	star	-
+1145	3	-	hydrogen atoms	destroy	star	-
+1145	5	-	red giant star	create	-	?
+
+1146	7	-	carbon atoms	create	-	star
+1146	4	-	energy	destroy	star	-
+1146	3	-	helium	create	-	star
+1146	7	-	helium	destroy	star	-
+1146	2	-	hydrogen fuel	destroy	star	-
+1146	3	-	hydrogen	destroy	star	-
+1146	10	-	red giant star	create	-	space
+1146	1	-	star	destroy	space	-
+
+1147	4	-	carbon atoms	create	-	star
+1147	1	-	helium atoms	create	-	star
+1147	2	-	helium	create	-	star
+1147	4	-	helium	destroy	star	-
+1147	1	-	hydrogen atoms	destroy	star	-
+1147	2	-	hydrogen	destroy	star	-
+1147	6	-	red giant star	create	-	?
+
+1188	2	-	comet	move	outer space	close to a planet
+1188	3	-	comet	move	close to a planet	planet 's atmosphere
+1188	4	-	comet	destroy	planet 's atmosphere	-
+1188	5	-	hole; crater	create	-	planet
+
+1189	1	-	chunks of rock	create	-	atmosphere
+1189	4	-	chunks of rock	destroy	atmosphere	-
+1189	5	-	crater	create	-	earth
+
+1190	1	-	deoxygenated blood	move	?	heart
+1190	2	-	deoxygenated blood	move	heart	right atrium
+1190	3	-	deoxygenated blood	move	right atrium	tricuspid valve
+1190	4	-	deoxygenated blood	move	tricuspid valve	right ventricle
+1190	5	-	deoxygenated blood	move	right ventricle	lung
+1190	6	-	deoxygenated blood	destroy	lung	-
+1190	10	-	deoxygenated blood	create	-	heart
+1190	6	-	oxygen	destroy	?	-
+1190	6	-	oxygenated blood	create	-	lung
+1190	7	-	oxygenated blood	move	lung	left atrium
+1190	8	-	oxygenated blood	move	left atrium	left ventricle
+1190	9	-	oxygenated blood	move	left ventricle	body
+1190	10	-	oxygenated blood	destroy	body	-
+
+1240	1	-	air	move	?	evaporator 's coil
+1240	4	-	air	move	evaporator 's coil	?
+1240	2	-	heat	move	?	refrigerant
+1240	3	-	heat	move	refrigerant	coil
+1240	6	-	heat	destroy	coil	-
+1240	5	-	liquid	create	-	condenser
+1240	8	-	liquid	move	condenser	evaporator
+1240	3	-	refrigerent gas	create	-	coil
+1240	3	-	refrigerent liquid	destroy	coil	-
+1240	4	-	refrigerent gas	move	coil	compressor
+1240	5	-	refrigerent gas	destroy	compressor	-
+

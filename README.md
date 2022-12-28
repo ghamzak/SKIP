@@ -1,5 +1,5 @@
 # SKIP
-Pytorch implementation of **S**emantic **K**nowledge **I**n **P**rocedural text understanding model on [ProPara dataset](https://allenai.org/data/propara). The SKIP model was heavily inspired by [KOALA model](https://github.com/ytyz1307zzh/KOALA)  (See the [leaderboard](https://leaderboard.allenai.org/propara/submissions/public)). The main difference with KOALA is that KOALA only uses commonsense knowledge extracted from ConceptNet, while SKIP uses linguistic knowledge as well. In particular, SKIP uses the semantic predicates extracted from the VerbNet semantic parse of each sentence in the dataset, using the information encoded in the semantic predicates for informing the model about the semantics of the event that is happenning to individual entities in a given sentence.
+Pytorch implementation of **S**emantic **K**nowledge **I**n **P**rocedural text understanding (SKIP) model on [ProPara dataset](https://allenai.org/data/propara). The SKIP model was heavily inspired by [KOALA model](https://github.com/ytyz1307zzh/KOALA) developed by researchers from Microsoft and Peking Uniersity (See the [leaderboard](https://leaderboard.allenai.org/propara/submissions/public)). The main difference of SKIP and KOALA is that KOALA only uses commonsense knowledge extracted from ConceptNet, while SKIP uses semantic knowledge as well. In particular, SKIP uses the semantic predicates extracted from the VerbNet semantic parse of each sentence in the dataset, using the information encoded in the semantic predicates for informing the model about the semantics of the event that is happenning to individual entities in a given sentence.
 
 ## Data
 
@@ -27,7 +27,7 @@ AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQ
 
 1. [Download](https://docs.google.com/spreadsheets/d/1x5Ct8EmQs2hVKOYX7b2nS0AOoQi4iM7H9d9isXRDwgM/edit#gid=832930347) the dataset or use my copy in `data/`.
 
-2. Every single sentence in the dataset was parsed using the [VerbNet parser](https://github.com/jgung/verbnet-parser). If you want to perform parsing on your own, or on a different dataser, refer to this link for more information. Otherwise, I have stored a copy of the parsed files [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQs2hVKOYX7b2nS0AOoQi4iM7H9d9isXRDwgM/edit#gid=832930347) --> change this.
+2. Every single sentence in the dataset was parsed using the [VerbNet parser](https://github.com/jgung/verbnet-parser). If you want to perform parsing on your own, or on a different dataser, refer to this link for more information. Otherwise, I have stored a copy of the parsed files [here](https://drive.google.com/drive/folders/12cCyLme4ON_ns4n4KYMVI2OmdLmaOT0z?usp=sharing).
 
 3. Process the CSV data files:
 
@@ -41,14 +41,14 @@ AI2 released the dataset [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQ
    
    **P.P.S.** If you choose to preprocess your own data, your dataset will get different orders of location candidates (compared to my copy in `data/`) due to the randomness of python set. This will lead to slightly different model performance due to the existence of dropout.
    
-4. **Knowledge preparation**: To reproduce SKIP, you need to format knowledge triples such that it can be fed into a neural model. cd to the `Conceptnet` directory, and do the following:
+4. **Knowledge preparation**: To reproduce SKIP, you need to format knowledge triples such that it can be fed into a neural model. cd to the `Conceptnet` directory, where all the external knowledge preparation and preprocessing happen, and do the following:
    a. run `rough_retrieval_vn.py` 
    b. run `translate_vn.py`
    c. run `combine_vn_cn.py`
 
 The output is the file `retrieval.json` under `Conceptnet/result/`.
 
-5. The BERT encoder fine-tuned on additional Wiki paragraphs are stored on Google Drive, [here](https://docs.google.com/spreadsheets/d/1x5Ct8EmQs2hVKOYX7b2nS0AOoQi4iM7H9d9isXRDwgM/edit#gid=832930347) --> change this.
+5. The BERT encoder fine-tuned on additional Wiki paragraphs are stored on Google Drive, [here](https://drive.google.com/drive/folders/1jAoy093PSleMiRtk8vwDU75qpYWxe00t?usp=share_link).
 
 5. Train a SKIP model:
 

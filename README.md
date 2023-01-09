@@ -62,7 +62,7 @@ The output is the file `retrieval.json` under `Conceptnet/result/`.
 
 `-cpnet_path` denites the json file containing all types of symbolic knowledge that we want to feed into the model while training, and `-state_verb` should point to the co-appearance verb set of entity states. My copy of these two files are stored in `ConceptNet/result/`. Please refer to the README file under `ConceptNet/` directory for more details of generating these files from scratch.
 
-   `-cpnet_plm_path` denotes the directory in which the results of fine-tuning a BERT encoder on the symbolic knowledge of your choice is stored, and `-wiki_plm_path` denotes the directory in which the results of fine-tuning a BERT encoder on additional Wikipedia articles containing procedural texts is stored. My copy of these fine-tuned encoders are stored in [Google Drive](https://drive.google.com/drive/folders/1i0rFPx5DKUXXgoaqlyYsEHLqPonz1yWF?usp=sharing) --> change this. Please refer to the README files under `wiki/` and `finetune/` directories for more details of collecting Wiki paragraphs and fine-tuning BERT encoders.
+   `-cpnet_plm_path` denotes the directory in which the results of fine-tuning a BERT encoder on the symbolic knowledge of your choice is stored, and `-wiki_plm_path` denotes the directory in which the results of fine-tuning a BERT encoder on additional Wikipedia articles containing procedural texts is stored. My copy of these fine-tuned encoders are stored in [Google Drive](https://drive.google.com/drive/folders/1-PZXLGRBAY_1B4ANKqC93wqUOwVwQ95U?usp=sharing). Please refer to the README files under `wiki/` and `finetune/` directories for more details of collecting Wiki paragraphs and fine-tuning BERT encoders.
 
    Some useful training arguments:
 
